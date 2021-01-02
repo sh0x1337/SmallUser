@@ -3,3 +3,4 @@ composer.lock
 .*
 !.gitignore
 !.travis.yml
+.idea
