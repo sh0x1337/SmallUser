@@ -2,6 +2,7 @@
 
 namespace SmallUser\Service;
 
+use Doctrine\ORM\EntityManager;
 use SmallUser\Entity\UserInterface;
 use SmallUser\Form\Login;
 use SmallUser\Mapper\HydratorUser;
@@ -24,6 +25,8 @@ class User
     protected $config;
     /** @var PluginManager */
     protected $controllerPluginManager;
+    /** @var EntityManager */
+    protected $entityManager;
 
     /**
      * User constructor.
@@ -31,17 +34,20 @@ class User
      * @param Login $loginForm
      * @param array $config
      * @param PluginManager $controllerPluginManager
+     * @param EntityManager $entityManager
      */
     public function __construct(
         AuthenticationService $authService,
         Login $loginForm,
         array $config,
-        PluginManager $controllerPluginManager
+        PluginManager $controllerPluginManager,
+        EntityManager $entityManager
     ) {
         $this->authService = $authService;
         $this->loginForm = $loginForm;
         $this->config = $config;
         $this->controllerPluginManager = $controllerPluginManager;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -248,5 +254,23 @@ class User
     protected function getControllerPluginManager()
     {
         return $this->controllerPluginManager;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAllUsersCount()
+    {
+        /** @var \SmallUser\Entity\Repository\User $repository */
+        $repository = $this->getEntityManager()->getRepository(\SmallUser\Entity\User::class);
+        return $repository->getAllUsersCount();
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
     }
 }

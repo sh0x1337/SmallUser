@@ -23,4 +23,17 @@ class User extends EntityRepository
 
         return $query->getOneOrNullResult();
     }
+
+    /**
+     *
+     * @return int
+     */
+    public function getAllUsersCount()
+    {
+        $query = $this->createQueryBuilder('p')
+            ->select('COUNT(p.usrId)')
+            ->getQuery();
+
+        return $query->getSingleScalarResult();
+    }
 }
